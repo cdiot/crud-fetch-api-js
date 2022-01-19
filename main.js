@@ -1,24 +1,27 @@
-function fetchData() {
-    fetch('https://reqres.in/api/users')
-        .then(response => {
-            if (!response.ok) {
-                throw Error("Error");
-            }
-            return response.json();
+function get(url) {
+    return fetch(url)
+        .then(function (httpBodyResponse) {
+            console.log('danslefetch')
+            let response = httpBodyResponse.json()
+            return response
         })
-        .then(data => {
-            const html = data.data
-                .map(user => {
-                    return `<p>Nom : ${user.first_name} </p>`;
-                })
-                .join("");
-            document
-                .querySelector('#app')
-                .insertAdjacentHTML('afterbegin', html);
-        })
-        .catch(error => {
-            console.log(error);
-        });
 }
 
-fetchData();
+async function controllerShowData() {
+    let datas = await get('https://reqres.in/api/users')
+    showData(datas.data);
+    console.log(datas)
+}
+
+function showData(users) {
+    const html = users
+        .map(user => {
+            return `<p>Nom : ${user.first_name} </p>`;
+        })
+        .join("");
+    document
+        .querySelector('#app')
+        .insertAdjacentHTML('afterbegin', html);
+}
+
+controllerShowData();
