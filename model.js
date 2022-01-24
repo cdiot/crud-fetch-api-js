@@ -1,12 +1,15 @@
 class Model {
-    static getList(url) {
+    static get(url) {
         return fetch(url)
             .then(function (httpBodyResponse) {
-                let response = httpBodyResponse.json()
-                return response
+                if (httpBodyResponse.ok) {
+                    return httpBodyResponse.json();
+                } else {
+                    return Promise.reject(httpBodyResponse);
+                }
             })
             .catch(error => {
-                console.log(error)
+                console.log('Quelque chose s\'est mal passé.', error)
             });
     }
 }
